@@ -3,69 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using QuotesApi.Data;
 using QuotesApi.Models;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace QuotesApi.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
     public class QuotesController : ControllerBase
     {
-       static List<Quote> _quotes = new List<Quote>()
+
+        private QuotesDbContext _quotesDbContext;
+
+
+        public QuotesController(QuotesDbContext quotesDbContext)
         {
-            new Quote(){
-                Id = 0,
-                Author = "Nelson Mandela",
-                Description = "The greatest glory in living lies not in never falling, but in rising every time we fall",
-                Title = "Inspiration"
-            },
+
+            _quotesDbContext = quotesDbContext;
+
+        }
 
 
-              new Quote(){
-                Id = 1,
-                Author = "Walt Disney",
-                Description = "The way to get started is to quit talking and begin doing.",
-                Title = "Motivation"
-            },
 
-
-               new Quote(){
-                Id = 1,
-                Author = "James Cameron",
-                Description = "If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success",
-                Title = "Motivation"
-            }
-         };
-
-
+        // GET: api/values
         [HttpGet]
         public IEnumerable<Quote> Get()
         {
-            return _quotes;
+            return _quotesDbContext.Quotes;
         }
 
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            return "value";
+        }
 
+        // POST api/values
         [HttpPost]
-        public void Post([FromBody]Quote quote)
+        public void Post([FromBody] string value)
         {
-            _quotes.Add(quote);
         }
 
-
+        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Quote quote)
+        public void Put(int id, [FromBody] string value)
         {
-            _quotes[id] = quote;
         }
 
-
+        // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _quotes.RemoveAt(id);
         }
-
-
     }
 }

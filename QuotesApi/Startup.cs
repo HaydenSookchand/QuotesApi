@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using QuotesApi.Data;
 
 namespace QuotesApi
 {
@@ -26,10 +28,12 @@ namespace QuotesApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<QuotesDbContext>(option => option.UseSqlServer(@"Server=localhost; User ID=SA; Password=<Password1234$>; Initial Catalog=QuotesDB"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env , QuotesDbContext quotesDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -37,7 +41,7 @@ namespace QuotesApi
             }
 
             app.UseHttpsRedirection();
-
+            quotesDbContext.Database.EnsureCreated();
             app.UseRouting();
 
             app.UseAuthorization();
