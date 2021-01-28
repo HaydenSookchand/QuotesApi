@@ -1,26 +1,24 @@
 ﻿<Properties StartupConfiguration="{BDB8574B-B95F-4177-A5E9-5E89507E222F}|Default">
   <MonoDevelop.Ide.ItemProperties.QuotesApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="README.MD">
+  <MonoDevelop.Ide.Workbench ActiveDocument="QuotesApi/Scripts/EmptyTextFile.txt">
     <Files>
       <File FileName="EmptyTextFile.txt" Line="38" Column="13" />
       <File FileName="QuotesApi/Startup.cs" Line="31" Column="164" />
       <File FileName="QuotesApi/Data/QuotesDbContext.cs" Line="10" Column="48" />
       <File FileName="QuotesApi/Controllers/ValuesController.cs" Line="16" Column="1" />
-      <File FileName="QuotesApi/appsettings.json" Line="11" Column="22" />
+      <File FileName="QuotesApi/appsettings.json" Line="9" Column="22" />
       <File FileName="QuotesApi/Program.cs" Line="16" Column="1" />
-      <File FileName="README.MD" Line="1" Column="1" />
+      <File FileName="README.MD" Line="3" Column="1" />
+      <File FileName="QuotesApi/Scripts/EmptyTextFile.txt" Line="2" Column="99" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="QuotesApi" expanded="True" selected="True">
+          <Node name="QuotesApi" expanded="True">
             <Node name="QuotesApi" expanded="True">
-              <Node name="Dependencies" expanded="True">
-                <Node name="PackageDependencies" expanded="True" />
+              <Node name="Scripts" expanded="True">
+                <Node name="EmptyTextFile.txt" selected="True" />
               </Node>
-              <Node name="Controllers" expanded="True" />
-              <Node name="Data" expanded="True" />
-              <Node name="Models" expanded="True" />
             </Node>
           </Node>
         </State>
