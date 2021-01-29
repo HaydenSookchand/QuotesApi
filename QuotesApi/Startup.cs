@@ -41,7 +41,7 @@ namespace QuotesApi
             }
 
             app.UseHttpsRedirection();
-            quotesDbContext.Database.EnsureCreated();
+            //quotesDbContext.Database.Migrate();
             app.UseRouting();
 
             app.UseAuthorization();
