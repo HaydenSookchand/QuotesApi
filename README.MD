@@ -13,7 +13,7 @@ sudo docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<Password1234$>" \
 
 ## Add Migrations to project
  cd QuotesApi
-FPHAYSOOMAC:QuotesApi haydenso$ dotnet ef migrations add initials
+dotnet ef migrations add initials
 
 
 ## Reset Docker 
