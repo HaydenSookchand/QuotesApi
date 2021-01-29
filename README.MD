@@ -15,6 +15,9 @@ sudo docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<Password1234$>" \
  cd QuotesApi
 dotnet ef migrations add initials
 
+## Update the Database
+ef database update
+
 
 ## Reset Docker 
 docker ps -a
