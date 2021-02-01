@@ -2,14 +2,8 @@
   <MonoDevelop.Ide.ItemProperties.QuotesApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="QuotesApi/Controllers/QuotesController.cs">
     <Files>
-      <File FileName="QuotesApi/Startup.cs" Line="56" Column="1" />
-      <File FileName="QuotesApi/Data/QuotesDbContext.cs" />
-      <File FileName="QuotesApi/appsettings.json" />
-      <File FileName="QuotesApi/Program.cs" />
-      <File FileName="README.MD" />
-      <File FileName="QuotesApi/Models/Quote.cs" Line="14" Column="1" />
-      <File FileName="QuotesApi/Scripts/AddData.sql" Line="5" Column="1" />
-      <File FileName="QuotesApi/Controllers/QuotesController.cs" Line="68" Column="63" />
+      <File FileName="QuotesApi/Models/Quote.cs" Line="5" Column="2" />
+      <File FileName="QuotesApi/Controllers/QuotesController.cs" Line="82" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -19,6 +13,7 @@
               <Node name="Controllers" expanded="True">
                 <Node name="QuotesController.cs" selected="True" />
               </Node>
+              <Node name="Data" expanded="True" />
               <Node name="Models" expanded="True" />
               <Node name="Scripts" expanded="True" />
             </Node>
