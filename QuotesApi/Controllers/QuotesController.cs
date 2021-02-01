@@ -46,6 +46,16 @@ namespace QuotesApi.Controllers
             return Ok(quotes);
         }
 
+        [HttpGet("[action]")]
+        public IActionResult PagingQuote(int? pageNumber, int? pageSize) {
+
+         var  quotes = _quotesDbContext.Quotes;
+         var currentPageNumber = pageNumber ?? 1;
+         var currentPageSize = pageSize ?? 2;
+
+         return Ok(quotes.Skip((currentPageNumber - 1)* currentPageSize).Take(currentPageSize));
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
