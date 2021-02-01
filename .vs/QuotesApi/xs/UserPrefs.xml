@@ -2,8 +2,9 @@
   <MonoDevelop.Ide.ItemProperties.QuotesApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="QuotesApi/Controllers/QuotesController.cs">
     <Files>
-      <File FileName="QuotesApi/Models/Quote.cs" Line="5" Column="2" />
-      <File FileName="QuotesApi/Controllers/QuotesController.cs" Line="82" Column="1" />
+      <File FileName="QuotesApi/Models/Quote.cs" Line="20" Column="34" />
+      <File FileName="QuotesApi/Controllers/QuotesController.cs" Line="63" Column="1" />
+      <File FileName="QuotesApi/Program.cs" Line="16" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,7 +26,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/haydenso/Desktop/Projects/Hayden/quotesApi/QuotesApi/Controllers/QuotesController.cs" relfile="QuotesApi/Controllers/QuotesController.cs" line="63" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
