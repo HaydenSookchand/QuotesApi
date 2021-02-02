@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,17 @@ namespace QuotesApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // 1. Add Authentication Services
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://quoteapisookchand.eu.auth0.com/";
+                options.Audience = "https://localhost:5001/";
+            });
+
             services.AddControllers();
             services.AddDbContext<QuotesDbContext>(option => option.UseSqlServer(@"Server=localhost; User ID=SA; Password=<Password1234$>; Initial Catalog=QuotesDB"));
             services.AddMvc().AddXmlDataContractSerializerFormatters();
@@ -40,6 +52,9 @@ namespace QuotesApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // 2. Enable authentication middleware
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             //quotesDbContext.Database.Migrate();

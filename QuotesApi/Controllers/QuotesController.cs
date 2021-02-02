@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuotesApi.Data;
@@ -12,6 +14,7 @@ using QuotesApi.Models;
 namespace QuotesApi.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class QuotesController : ControllerBase
     {
 
@@ -82,6 +85,10 @@ namespace QuotesApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Quote quote)
         {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            quote.UserId = userId;
+            quote.CreatedAt = DateTime.Now;
             _quotesDbContext.Quotes.Add(quote);
             _quotesDbContext.SaveChanges();
 
