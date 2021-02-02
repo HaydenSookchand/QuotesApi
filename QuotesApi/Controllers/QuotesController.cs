@@ -1,71 +1,171 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using QuotesApi.Data;
 using QuotesApi.Models;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace QuotesApi.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class QuotesController : ControllerBase
     {
-       static List<Quote> _quotes = new List<Quote>()
+
+        private QuotesDbContext _quotesDbContext;
+
+        public QuotesController(QuotesDbContext quotesDbContext)
         {
-            new Quote(){
-                Id = 0,
-                Author = "Nelson Mandela",
-                Description = "The greatest glory in living lies not in never falling, but in rising every time we fall",
-                Title = "Inspiration"
-            },
 
+            _quotesDbContext = quotesDbContext;
 
-              new Quote(){
-                Id = 1,
-                Author = "Walt Disney",
-                Description = "The way to get started is to quit talking and begin doing.",
-                Title = "Motivation"
-            },
-
-
-               new Quote(){
-                Id = 1,
-                Author = "James Cameron",
-                Description = "If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success",
-                Title = "Motivation"
-            }
-         };
-
+        }
+        
 
         [HttpGet]
-        public IEnumerable<Quote> Get()
+        [AllowAnonymous]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        public IActionResult Get(string sort)
         {
-            return _quotes;
+            IQueryable<Quote> quotes;
+
+            switch (sort)
+            {
+                case  "desc" :
+                  quotes =  _quotesDbContext.Quotes.OrderByDescending(q => q.CreatedAt);
+                    break;
+                case "asc":
+                    quotes = _quotesDbContext.Quotes.OrderBy(q => q.CreatedAt);
+                    break;
+                default:
+                    quotes = _quotesDbContext.Quotes;
+                    break;
+            }
+
+            return Ok(quotes);
         }
 
+        [HttpGet("[action]")]
+        public IActionResult PagingQuote(int? pageNumber, int? pageSize) {
+
+         var  quotes = _quotesDbContext.Quotes;
+         var currentPageNumber = pageNumber ?? 1;
+         var currentPageSize = pageSize ?? 2;
+
+         return Ok(quotes.Skip((currentPageNumber - 1)* currentPageSize).Take(currentPageSize));
+        }
+
+
+        [HttpGet("[action]")]
+        public IActionResult SearchQuote(string type)
+        {
+            var quotes = _quotesDbContext.Quotes.Where(t => t.Type.StartsWith(type));
+            return Ok(quotes);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult MyQuotes()
+        {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            var quotes = _quotesDbContext.Quotes.Where(t => t.UserId == userId);
+            return Ok(quotes);
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var quote = _quotesDbContext.Quotes.Find(id);
+            if (quote == null)
+            {
+                return NotFound("No record found for this id");
+            }
+            else
+            {
+                return Ok(quote);
+            }
+        }
 
         [HttpPost]
-        public void Post([FromBody]Quote quote)
+        public IActionResult Post([FromBody] Quote quote)
         {
-            _quotes.Add(quote);
-        }
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
+            quote.UserId = userId;
+            quote.CreatedAt = DateTime.Now;
+            _quotesDbContext.Quotes.Add(quote);
+            _quotesDbContext.SaveChanges();
+
+            return StatusCode(StatusCodes.Status201Created);
+        }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Quote quote)
+        public IActionResult Put(int id, [FromBody] Quote quote)
         {
-            _quotes[id] = quote;
+
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            var quoteToUpdate = _quotesDbContext.Quotes.Find(id);
+
+            if (quoteToUpdate == null)
+            {
+                return NotFound("No record found for this id");
+            }
+            else {
+
+                if (userId != quoteToUpdate.UserId)
+                {
+                    return BadRequest("You dont have the admin rights to update");
+                }
+                else {
+                
+                    quoteToUpdate.Title = quote.Title;
+                    quoteToUpdate.Author = quote.Author;
+                    quoteToUpdate.Description = quote.Description;
+                    quoteToUpdate.Type = quote.Type;
+                    quoteToUpdate.CreatedAt = quote.CreatedAt;
+                    _quotesDbContext.SaveChanges();
+                }
+
+                return Ok("Record Updated Successfully");
+            }
         }
 
-
+       
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            _quotes.RemoveAt(id);
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            var quoteToUpdate = _quotesDbContext.Quotes.Find(id);
+
+            if (quoteToUpdate == null)
+            {
+                return NotFound("No record found for this id");
+            }
+            else
+            {
+
+                if (userId != quoteToUpdate.UserId)
+                {
+                    return BadRequest("You dont have the admin rights to delete");
+                }
+                else
+                {
+                    var quoteToDelete = _quotesDbContext.Quotes.Find(id);
+                    _quotesDbContext.Quotes.Remove(quoteToDelete);
+                    _quotesDbContext.SaveChanges();
+                    return Ok("Deleted");
+                }
+            }
+
         }
-
-
     }
 }
