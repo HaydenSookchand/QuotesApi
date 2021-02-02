@@ -23,3 +23,8 @@ docker ps -a
 docker rm -f [ContainerId]
 
 sudo docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<Password1234$>" -p 1433 --name sqlQuotes -h sqlQuotes -d mcr.microsoft.com/mssql/server:2019-latest
+
+
+## Auth0
+https://auth0.com/ is used for handling user authentication and authorization.
+
